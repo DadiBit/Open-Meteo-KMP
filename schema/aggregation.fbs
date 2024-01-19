@@ -1,0 +1,15 @@
+namespace com.openmeteo.flatbuffers;
+
+enum Aggregation: ubyte {
+  none = 0,
+  minimum,
+  maximum,
+  mean,
+  p10,
+  p25,
+  median,
+  p75,
+  p90,
+  dominant,
+  sum
+}

@@ -1,0 +1,61 @@
+include "model.fbs";
+include "variable.fbs";
+include "../aggregation.fbs";
+include "../unit.fbs";
+
+namespace com.openmeteo.flatbuffers.forecast;
+
+table VariableWithValues {
+  variable: Variable;
+  unit: Unit;
+
+  /// Only used for current conditions
+  value: float;
+  /// Contains a time series of data
+  values: [float];
+  /// Only for sunrise/set as a unix timestamp
+  values_int64: [int64];
+
+  // same variable (e.g. temperature), but with different altitude/aggregation/...
+  altitude: int16; // meters
+  aggregation: Aggregation; // percentile, avg, min, max etc.
+  pressure_level: int16; // hPa
+  depth: int16;
+  depth_to: int16;
+
+  // Idk wtf is this, but it's in the original source code
+  ensemble_member: int16;
+}
+
+table Timeframe {
+  /// The start time of the timeframe
+  time: int64;
+  /// The end time of the timeframe
+  time_end: int64 (deprecated);
+  /// Interval (daily, hourly, 15_minutely...) in seconds
+  interval: int32;
+  /// List of variables with relative values
+  variables: [VariableWithValues];
+  /// Count of retrieved intervals == (nullable) values in every variable
+  count: uint32;
+}
+
+table Response {
+  latitude: float;
+  longitude: float;
+  elevation: float;
+  generation_time_milliseconds: float;
+  location_id: int64;
+  model: Model;
+  utc_offset_seconds: int32;
+  timezone: string;
+  timezone_abbreviation: string;
+  current: Timeframe (deprecated);
+  daily: Timeframe (deprecated);
+  hourly: Timeframe (deprecated);
+  minutely_15: Timeframe (deprecated);
+  six_hourly: Timeframe (deprecated);
+  timeframes: [Timeframe];
+}
+
+root_type Response;
