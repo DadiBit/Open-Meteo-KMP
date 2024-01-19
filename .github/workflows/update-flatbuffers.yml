@@ -1,0 +1,40 @@
+name: Update flatbuffers module
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: Checkout repository
+      id: checkout
+      uses: actions/checkout@v4
+
+    - name: Build `flatc` compiler
+      id: build-flatc
+      run: |
+        cd .submodules/google/flatbuffers
+        mkdir build
+        cd build
+        cmake -G "Unix Makefiles" ..
+        make -j
+        cd ../../../..
+
+    - name: Clean KMP code
+      id: clean-kmp-code
+      run: |
+        rm -rf flatbuffers/src/commonMain/kotlin/com/openmeteo/flatbuffers
+
+    - name: Generate KMP code from source schema
+      id: generate-kmp-code
+      run: |
+        shopt -s globstar
+        .submodules/google/flatbuffers/build/flatc \
+        --kotlin-kmp \
+        -o flatbuffers/src/commonMain/kotlin \
+        schema/**/*.fbs
