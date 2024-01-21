@@ -38,15 +38,15 @@ interface Query {
 
     interface TimeFormat
 
-    interface Daily<V> : TimeFormat {
+    interface Daily<V> : TimeFormat, PastDays, ForecastDays {
         val daily: QueryList<V>
     }
 
-    interface Hourly<V> : TimeFormat {
+    interface Hourly<V> : TimeFormat, PastHours, ForecastHours {
         val hourly: QueryList<V>
     }
 
-    interface Minutely15<V> : TimeFormat {
+    interface Minutely15<V> : TimeFormat, PastMinutely15, ForecastMinutely15 {
         val minutely_15: QueryList<V>
     }
 
