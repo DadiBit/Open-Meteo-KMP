@@ -54,27 +54,27 @@ interface Query {
         val current: QueryList<V>
     }
 
-    interface PastDays {
+    interface PastDays : TimeFormat {
         val past_days: Int?
     }
 
-    interface ForecastDays {
+    interface ForecastDays : TimeFormat {
         val forecast_days: Int?
     }
 
-    interface PastHours {
+    interface PastHours : TimeFormat {
         val past_hours: Int?
     }
 
-    interface ForecastHours {
+    interface ForecastHours : TimeFormat {
         val forecast_hours: Int?
     }
 
-    interface PastMinutely15 {
+    interface PastMinutely15 : TimeFormat {
         val past_minutely_15: Int?
     }
 
-    interface ForecastMinutely15 {
+    interface ForecastMinutely15 : TimeFormat {
         val forecast_minutely_15: Int?
     }
 
